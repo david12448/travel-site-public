@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f6f5f0">
+  <meta name="description" content="국내·해외 여행지, 쉼과 휴식, 교통·숙박·패키지·맛집을 한 동선으로 탐색하는 여행정보 서비스 준비 화면입니다.">
+  <title>여행의 결 | 여행·관광·쉼·휴식</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <header class="sitebar">
+    <a class="brand" href="./" aria-label="여행의 결 홈"><span class="brand-mark">✳</span> 여행의 결</a>
+    <span class="muted small">국내·해외 여행의 발견부터 예산까지</span>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="hero-inner">
+        <span class="eyebrow">DISCOVER · REST · TRAVEL</span>
+        <h1>여행지를 찾는 순간부터<br><em>쉬어 가는 시간</em>까지.</h1>
+        <p>공식 관광 안내와 현지의 여행 이야기, 이동·숙박·맛집·여행상품을 하나의 여행 계획으로 잇습니다.</p>
+        <div class="hero-points"><span>국내와 해외</span><span>숨은 여행지</span><span>교통과 숙박</span><span>예상 경비</span></div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="discover-title">
+      <div class="section-head">
+        <div><p class="eyebrow">FIND YOUR PLACE</p><h2 id="discover-title">어떤 여행을 떠나볼까요?</h2></div>
+        <p class="muted" id="data-status" role="status">검증된 여행정보 확인 중</p>
+      </div>
+      <div class="filters">
+        <div class="field grow"><label for="search">여행지 또는 키워드</label><input id="search" type="search" placeholder="지역, 명소, 여행 테마를 검색" autocomplete="off"></div>
+        <div class="field"><label for="scope">여행 범위</label><select id="scope"><option value="all">국내 + 해외</option><option value="KR">국내</option><option value="overseas">해외</option></select></div>
+        <div class="field"><label for="kind">관심사</label><select id="kind"><option value="all">전체 여행정보</option><option value="sight">관광지</option><option value="festival">축제·행사</option><option value="relax">쉼·휴식</option><option value="hidden">숨은 명소</option><option value="transport">교통</option><option value="lodging">숙박</option><option value="package">패키지·홈쇼핑</option><option value="dining">맛집</option></select></div>
+      </div>
+      <div class="resultbar"><strong id="result-count">0개</strong><span class="muted small">검증 완료된 공개 정보만 표시합니다.</span></div>
+      <div id="results" class="result-grid" aria-live="polite"></div>
+      <div id="empty" class="empty"><span class="empty-icon">⌁</span><h3>여행정보를 차근차근 준비하고 있어요.</h3><p>첫 공식 데이터가 검증되면 이곳에 표시됩니다. 실시간 가격·재고를 임의로 표시하지 않습니다.</p></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><div><p class="eyebrow">THE WHOLE JOURNEY</p><h2>여행지 하나에 필요한 정보</h2></div></div>
+      <div class="topics">
+        <article><span>01</span><h3>어떤 곳인가요?</h3><p>공식 관광정보와 여행 영상·방송·현지 블로그에서 찾은 장소를 교차 검증합니다.</p></article>
+        <article><span>02</span><h3>어떻게 가나요?</h3><p>비행기·기차·고속버스·배편·렌터카와 현지 이동 방법을 살핍니다.</p></article>
+        <article><span>03</span><h3>어디서 쉬나요?</h3><p>호텔·숙박 플랫폼의 날짜·객실·인원별 비용을 비교할 수 있게 준비합니다.</p></article>
+        <article><span>04</span><h3>무엇을 먹나요?</h3><p>별도 맛집 프로젝트에서 검증한 식당과 대표 음식 정보를 연결할 계획입니다.</p></article>
+        <article><span>05</span><h3>패키지가 나을까요?</h3><p>여행사 상품과 홈쇼핑 방송 혜택을 실제 포함·불포함 조건까지 비교합니다.</p></article>
+      </div>
+    </section>
+
+    <section class="section budget-section" id="budget">
+      <div class="section-head"><div><p class="eyebrow">TRIP COST PLANNER</p><h2>여행 예상 경비 계산기</h2></div></div>
+      <p class="muted">현재는 입력한 금액만 계산합니다. 실제 항공권·호텔·패키지 조회나 예약 가격은 제공하지 않습니다. 입력하지 않은 비용은 <strong>미확인</strong>으로 남습니다.</p>
+      <form id="budget-form">
+        <div class="form-grid">
+          <label>여행 인원(명)<input name="people" type="number" min="1" step="1" value="2" required></label>
+          <label>여행 일수(일)<input name="days" type="number" min="1" step="1" value="3" required></label>
+          <label>숙박 박수(박)<input name="nights" type="number" min="0" step="1" value="2" required></label>
+          <label>객실 수(개)<input name="rooms" type="number" min="1" step="1" value="1" required></label>
+          <label>왕복/장거리 교통비(1인 합계)<input name="transport" type="number" min="0" step="1" placeholder="미입력"></label>
+          <label>숙박비(객실 1개·1박)<input name="roomNight" type="number" min="0" step="1" placeholder="미입력"></label>
+          <label>식비(1인·1일)<input name="foodDaily" type="number" min="0" step="1" placeholder="미입력"></label>
+          <label>관광/입장료(1인 합계)<input name="admissions" type="number" min="0" step="1" placeholder="미입력"></label>
+          <label>현지 이동비(1인 합계)<input name="localTransport" type="number" min="0" step="1" placeholder="미입력"></label>
+          <label>기타·예비비(전체 합계)<input name="reserve" type="number" min="0" step="1" placeholder="미입력"></label>
+        </div>
+        <button type="submit">입력한 경비 합산하기 ↗</button>
+      </form>
+      <div id="budget-result" class="budget-result" role="status" aria-live="polite"><p>비용 항목을 입력하면 계산 결과가 나타납니다.</p></div>
+    </section>
+  </main>
+  <footer><strong>여행의 결</strong><p>검증되지 않은 정보와 과거 방송·특가 가격을 현재 가격으로 표시하지 않습니다.</p></footer>
+</body>
+</html>
