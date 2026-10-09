@@ -5,7 +5,7 @@ import {createServer} from 'node:http';
 import {fileURLToPath} from 'node:url';
 import {join,resolve,sep} from 'node:path';
 
-const root=fileURLToPath(new URL('../dist/',import.meta.url));
+const root=resolve(fileURLToPath(new URL('../dist/',import.meta.url)));
 const files=(path)=>readFileSync(join(root,path),'utf8');
 const paths=[
   'destinations/korea/jeju/saryeoni-forest/',
