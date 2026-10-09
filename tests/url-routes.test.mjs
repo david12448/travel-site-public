@@ -30,14 +30,19 @@ test("direct deep links already have physical index HTML before deploying",()=>{
    assert.ok(html.includes("<h1>"+item.title+"</h1>"),route+" identity");
    assert.ok(html.includes('href="../../../../styles.css"'),route+" assets");
    assert.ok(html.includes('href="../../../../"'),route+" home path");
-   assert.ok(!html.includes("evococoons.com")&&!html.includes("prince-in-wonderworld.com"));
+   if(!process.env.SITE_ORIGIN){
+     assert.ok(!html.includes("evococoons.com")&&!html.includes("prince-in-wonderworld.com"));
+   }else{
+     assert.ok(html.includes('rel="canonical"'));
+     assert.ok(html.includes(process.env.SITE_ORIGIN.replace(/\\/$/,"")+("/"+route)));
+   }
  }
 });
 
 test("canonical host stays undecided and no unverified sitemap is published",()=>{
  assert.equal(config.public_origin,null);
  assert.equal(config.deployment_status,"not_configured");
- assert.ok(!existsSync(new URL("sitemap.xml",root)));
+ assert.equal(existsSync(new URL("sitemap.xml",root)),Boolean(process.env.SITE_ORIGIN));
 });
 
 test("old query route remains supported",()=>{
