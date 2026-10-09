@@ -1,5 +1,78 @@
 {
   "schema_version": 1,
-  "updated_at": null,
-  "items": []
+  "updated_at": "2026-10-09",
+  "items": [
+    {
+      "id": "kr-jeju-saryeoni-forest",
+      "title": "사려니숲길",
+      "native_name": "사려니숲길",
+      "type": "relax",
+      "country_code": "KR",
+      "region": "제주",
+      "district": "제주시",
+      "summary": "제주 동부의 삼나무 숲길로, 숲의 풍경을 따라 천천히 걸으며 쉬어 가기 좋은 자연 여행지입니다.",
+      "visit_tip": "출입 가능한 구간과 탐방 조건은 방문 전 제주 공식 관광 안내에서 다시 확인하세요.",
+      "source_label": "비짓제주(제주관광공사)",
+      "verified_at": "2026-10-09",
+      "provenance": "official",
+      "tags": [
+        "자연",
+        "숲길",
+        "걷기",
+        "휴식"
+      ],
+      "price_status": "unknown",
+      "currency": null,
+      "price_amount": null,
+      "price_observed_at": null
+    },
+    {
+      "id": "kr-busan-gamcheon",
+      "title": "감천문화마을",
+      "native_name": "감천문화마을",
+      "type": "sight",
+      "country_code": "KR",
+      "region": "부산",
+      "district": "사하구",
+      "summary": "부산 사하구의 산자락에 이어진 골목과 색채가 풍부한 집들이 인상적인 문화마을로, 골목 산책과 마을 풍경을 즐길 수 있습니다.",
+      "visit_tip": "주민이 생활하는 공간을 함께 지나므로 사진 촬영과 이동 시 주변을 배려해 주세요.",
+      "source_label": "비짓부산(부산관광공사)",
+      "verified_at": "2026-10-09",
+      "provenance": "official",
+      "tags": [
+        "골목",
+        "문화",
+        "산책",
+        "도시여행"
+      ],
+      "price_status": "unknown",
+      "currency": null,
+      "price_amount": null,
+      "price_observed_at": null
+    },
+    {
+      "id": "jp-kyoto-arashiyama",
+      "title": "교토 아라시야마",
+      "native_name": "嵐山 (Arashiyama)",
+      "type": "relax",
+      "country_code": "JP",
+      "region": "교토",
+      "district": "우쿄구 일대",
+      "summary": "교토 서부의 아라시야마는 대나무숲과 도게쓰교로 알려져 있으며, 자연과 전통적인 거리 풍경을 함께 둘러보기 좋은 지역입니다.",
+      "visit_tip": "인기 관광지의 혼잡을 고려하고, 대나무를 훼손하지 않는 등 현지 방문 예절을 지켜주세요.",
+      "source_label": "Kyoto Travel(교토시 공식 관광안내)",
+      "verified_at": "2026-10-09",
+      "provenance": "official",
+      "tags": [
+        "해외",
+        "대나무숲",
+        "걷기",
+        "휴식"
+      ],
+      "price_status": "unknown",
+      "currency": null,
+      "price_amount": null,
+      "price_observed_at": null
+    }
+  ]
 }

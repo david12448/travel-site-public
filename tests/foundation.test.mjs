@@ -18,10 +18,11 @@ test("negative or invalid money refused",()=>{
  assert.throws(()=>estimateBudget({people:1,days:1,nights:1,rooms:1,transport:-1,
    roomNight:0,foodDaily:0,admissions:0,localTransport:0,reserve:0}));
 });
-test("initial records are empty, not invented",()=>{
+test("official verified seed records have provenance",()=>{
  const data=JSON.parse(readFileSync(new URL("../data/items.json",import.meta.url)));
  assert.equal(data.schema_version,1);
- assert.deepEqual(data.items,[]);
+ assert.equal(data.items.length,3);
+ assert.ok(data.items.every(x=>x.provenance==="official" && x.price_status==="unknown"));
 });
 test("public files must not expose private source details",()=>{
  const files=["../data/items.json","../index.html","../app.js"];
