@@ -12,8 +12,9 @@ const paths=[
   'destinations/korea/busan/gamcheon-culture-village/',
   'destinations/japan/kyoto/arashiyama/'
 ];
-const base='https://david12448.github.io/travel-site-public/';
-const prefix='/travel-site-public/';
+const config=JSON.parse(readFileSync(new URL('../config/site.json',import.meta.url),'utf8'));
+const base=config.default_site_url;
+const prefix=new URL(base).pathname;
 
 test('page hierarchy and readable names are generated for each approved place',()=>{
   for(const path of paths){
@@ -36,7 +37,8 @@ test('existing query parameter page and budget calculator still exist',()=>{
   assert.match(home,/id="place-detail"/);
   assert.match(js,/renderPlaceDetail/);
   assert.match(js,/encodeURIComponent\(item.id\)/);
-  assert.match(home,/<link rel="canonical" href="https:\/\/david12448.github.io\/travel-site-public\/">/);
+  assert.ok(home.includes('<link rel="canonical" href="'+base+'">'));
+
 });
 test('sitemap, robots, canonical and no-index on tiny category pages are consistent',()=>{
   const sitemap=files('sitemap.xml');
