@@ -13,6 +13,12 @@ jobs:
         with:
           node-version: '20'
       - run: node --check app.js
+      - name: Verify alternate root domain simulation (no DNS changes)
+        run: |
+          SITE_URL=https://travel.prince-in-wonderworld.com/ node scripts/build-site.mjs
+          grep -q 'https://travel.prince-in-wonderworld.com/destinations/japan/kyoto/arashiyama/' dist/sitemap.xml
+          grep -q 'href="/styles.css"' dist/destinations/japan/kyoto/arashiyama/index.html
+          test ! -e dist/CNAME
       - name: Build static pretty-URL pages
         run: node scripts/build-site.mjs
       - name: Validate generated URLs and regression tests
