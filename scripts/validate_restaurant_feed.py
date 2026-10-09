@@ -28,6 +28,20 @@ PUBLIC_ID = re.compile(r"^rst_[A-Za-z0-9_-]{6,80}$")
 TOKEN = re.compile(r"^src_[a-z0-9_-]{8,100}$")
 
 
+# Public fields must not smuggle original URLs or private file locations in strings.
+# The validator is a publication guard, not a substitute for private-source review.
+PUBLIC_TEXT_URL = re.compile(
+    r"(?i)(?:\\b(?:https?|ftp|file)://|(?<!\\w)www\\.|"
+    r"(?<!\\w)//[a-z0-9.-]+(?:/|$)|"
+    r"\\b[a-z0-9.-]+\\.(?:com|net|org|io|co\\.kr|go\\.kr|kr|jp|dev|app|info)(?:[/?:#]|\\b))"
+)
+PRIVATE_PATH = re.compile(
+    r"(?i)(?:[a-z]:[\\\\/]|(?:^|[\\s\\(\\[\\\"'\\x60])\\.{1,2}[/\\\\]|"
+    r"(?:^|[/\\\\\\s])(?:private|internal|raw[_-]?snapshots?|collectors?|"
+    r"parsers?|source[_-]?registry|secrets?)[/\\\\]|"
+    r"(?<!\\w)/[a-z0-9_.-]+(?:/[a-z0-9_.-]+)+)"
+)
+
 def verify_date(value, field):
     if not isinstance(value, str):
         raise ValueError(f"{field}: expected YYYY-MM-DD string")
@@ -47,6 +61,9 @@ def ensure_no_internals(value):
     elif isinstance(value, list):
         for entry in value:
             ensure_no_internals(entry)
+    elif isinstance(value, str):
+        if PUBLIC_TEXT_URL.search(value) or PRIVATE_PATH.search(value):
+            raise ValueError("public text contains URL or internal path")
 
 
 def validate(payload):
