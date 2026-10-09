@@ -18,7 +18,7 @@ test("route map has exactly one safely nested path for every approved location",
    assert.match(route,/^places\/[a-z]{2}\/[a-z0-9]+(?:-[a-z0-9]+)*\/[a-z0-9]+(?:-[a-z0-9]+)*\/$/);
    assert.equal(route.split("/")[1],item.country_code.toLowerCase());
    assert.ok(!route.includes(".."));
- });
+ }
 });
 
 test("direct deep links already have physical index HTML before deploying",()=>{
