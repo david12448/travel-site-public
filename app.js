@@ -2,6 +2,7 @@ import { estimateBudget } from "./lib/budget.mjs";
 import { renderPlaceDetail } from "./lib/place-detail.mjs";
 const el = (id) => document.getElementById(id);
 let items = [];
+let stableRoutes = {};
 const typeNames = {sight:"관광지",festival:"축제·행사",relax:"쉼·휴식",hidden:"숨은 명소",transport:"교통",lodging:"숙박",package:"패키지·홈쇼핑",dining:"맛집"};
 const money = (x) => new Intl.NumberFormat("ko-KR").format(x) + "원";
 
@@ -22,7 +23,7 @@ function draw() {
     el("empty").querySelector("p").textContent = "검색어와 지역·관심사 필터를 바꿔 보세요.";
   }
   for (const item of filtered) {
-    const article = document.createElement("a"); article.className="item"; article.href="./?place="+encodeURIComponent(item.id); article.setAttribute("aria-label",item.title+" 상세보기");
+    const article = document.createElement("a"); article.className="item"; article.href=stableRoutes[item.id] ? "./"+stableRoutes[item.id] : "./?place="+encodeURIComponent(item.id); article.setAttribute("aria-label",item.title+" 상세보기");
     const kind = document.createElement("span"); kind.className="eyebrow"; kind.textContent=typeNames[item.type] || "여행정보";
     const name = document.createElement("h3"); name.textContent=item.title;
     const summary=document.createElement("p"); summary.textContent=item.summary;
@@ -38,6 +39,15 @@ async function load() {
     const data=await response.json();
     if(data.schema_version !== 1 || !Array.isArray(data.items)) throw new Error("데이터 형식 오류");
     items=data.items.filter(x=>x&&typeof x.title==="string"&&typeof x.region==="string"&&typeof x.verified_at==="string");
+    try {
+      const routeRes=await fetch("./data/url-routes.json",{cache:"no-store"});
+      if(routeRes.ok){
+        const routeData=await routeRes.json();
+        if(routeData.schema_version==="1.0" && routeData.routes && typeof routeData.routes==="object"){
+          stableRoutes=routeData.routes;
+        }
+      }
+    } catch { stableRoutes={}; }
     el("data-status").textContent="검증 공개 자료 "+items.length+"건";
   } catch {
     items=[]; el("data-status").textContent="자료 연결 확인이 필요합니다.";
