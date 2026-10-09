@@ -3,20 +3,105 @@
   "title": "Approved travel public item",
   "type": "object",
   "additionalProperties": false,
-  "required": ["id", "title", "type", "country_code", "region", "summary", "verified_at", "provenance"],
+  "required": [
+    "id",
+    "title",
+    "type",
+    "country_code",
+    "region",
+    "summary",
+    "verified_at",
+    "provenance"
+  ],
   "properties": {
-    "id": {"type": "string", "minLength": 1},
-    "title": {"type": "string", "minLength": 1},
-    "type": {"enum": ["sight", "festival", "relax", "hidden", "transport", "lodging", "package", "dining"]},
-    "country_code": {"type": "string", "pattern": "^[A-Z]{2}$"},
-    "region": {"type": "string"},
-    "summary": {"type": "string"},
-    "verified_at": {"type": "string", "format": "date"},
-    "provenance": {"enum": ["official", "verified_partner", "licensed_creator", "editorial_verified"]},
-    "tags": {"type": "array", "items": {"type": "string"}, "maxItems": 20},
-    "price_status": {"enum": ["unknown", "estimate", "dated_observation", "live_verified"]},
-    "currency": {"type": ["string", "null"]},
-    "price_amount": {"type": ["integer", "null"], "minimum": 0},
-    "price_observed_at": {"type": ["string", "null"], "format": "date-time"}
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "type": {
+      "enum": [
+        "sight",
+        "festival",
+        "relax",
+        "hidden",
+        "transport",
+        "lodging",
+        "package",
+        "dining"
+      ]
+    },
+    "country_code": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}$"
+    },
+    "region": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "verified_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "provenance": {
+      "enum": [
+        "official",
+        "verified_partner",
+        "licensed_creator",
+        "editorial_verified"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 20
+    },
+    "price_status": {
+      "enum": [
+        "unknown",
+        "estimate",
+        "dated_observation",
+        "live_verified"
+      ]
+    },
+    "currency": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "price_amount": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "price_observed_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "native_name": {
+      "type": "string"
+    },
+    "district": {
+      "type": "string"
+    },
+    "visit_tip": {
+      "type": "string"
+    },
+    "source_label": {
+      "type": "string"
+    }
   }
 }
