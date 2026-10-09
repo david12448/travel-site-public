@@ -13,4 +13,14 @@ jobs:
         with:
           node-version: '20'
       - run: node --check app.js
-      - run: node --test tests/*.test.mjs
+      - name: Build static pretty-URL pages
+        run: node scripts/build-site.mjs
+      - name: Validate generated URLs and regression tests
+        run: node --test tests/*.test.mjs
+      - name: Retain static preview artifact (not a live deployment)
+        uses: actions/upload-artifact@v4
+        with:
+          name: travel-static-site-preview
+          path: dist/
+          retention-days: 5
+          if-no-files-found: error
