@@ -10,14 +10,14 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      SITE_URL: ${{ vars.TRAVEL_SITE_URL }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
       - name: Build static URL pages
-        env:
-          SITE_URL: ${{ vars.TRAVEL_SITE_URL }}
         run: node scripts/build-site.mjs
       - name: Test direct URLs and canonical
         run: node --test tests/*.test.mjs
