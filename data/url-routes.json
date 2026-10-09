@@ -1,0 +1,8 @@
+{
+  "schema_version": "1.0",
+  "routes": {
+    "kr-jeju-saryeoni-forest": "places/kr/jeju/saryeoni-forest/",
+    "kr-busan-gamcheon": "places/kr/busan/gamcheon-culture-village/",
+    "jp-kyoto-arashiyama": "places/jp/kyoto/arashiyama/"
+  }
+}
