@@ -1,4 +1,5 @@
 import { estimateBudget } from "./lib/budget.mjs";
+import { renderPlaceDetail } from "./lib/place-detail.mjs";
 const el = (id) => document.getElementById(id);
 let items = [];
 const typeNames = {sight:"관광지",festival:"축제·행사",relax:"쉼·휴식",hidden:"숨은 명소",transport:"교통",lodging:"숙박",package:"패키지·홈쇼핑",dining:"맛집"};
@@ -21,7 +22,7 @@ function draw() {
     el("empty").querySelector("p").textContent = "검색어와 지역·관심사 필터를 바꿔 보세요.";
   }
   for (const item of filtered) {
-    const article = document.createElement("article"); article.className="item";
+    const article = document.createElement("a"); article.className="item"; article.href="./?place="+encodeURIComponent(item.id); article.setAttribute("aria-label",item.title+" 상세보기");
     const kind = document.createElement("span"); kind.className="eyebrow"; kind.textContent=typeNames[item.type] || "여행정보";
     const name = document.createElement("h3"); name.textContent=item.title;
     const summary=document.createElement("p"); summary.textContent=item.summary;
@@ -42,6 +43,7 @@ async function load() {
     items=[]; el("data-status").textContent="자료 연결 확인이 필요합니다.";
   }
   draw();
+  renderPlaceDetail(items,el("place-detail"));
 }
 ["search","scope","kind"].forEach(id=>el(id).addEventListener("input",draw));
 el("budget-form").addEventListener("submit",(event)=>{
