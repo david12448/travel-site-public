@@ -13,7 +13,7 @@ const paths=[
   'destinations/japan/kyoto/arashiyama/'
 ];
 const config=JSON.parse(readFileSync(new URL('../config/site.json',import.meta.url),'utf8'));
-const base=config.default_site_url;
+const base=(process.env.SITE_URL || config.default_site_url).replace(/\/?$/, '/');
 const prefix=new URL(base).pathname;
 
 test('page hierarchy and readable names are generated for each approved place',()=>{
