@@ -1,0 +1,9 @@
+{
+  "default_site_url": "https://david12448.github.io/travel-site-public/",
+  "brand": "여행의 결",
+  "reserved_custom_hosts": [
+    "travel.evococoons.com",
+    "travel.prince-in-wonderworld.com"
+  ],
+  "custom_domain_active": false
+}
