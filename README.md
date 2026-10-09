@@ -22,3 +22,14 @@
 
 ## 진행 현황 (2026-10-09)
 공식 관광 페이지 3곳(제주 사려니숲길/부산 감천문화마을/교토 아라시야마)의 고정 장소 사실을 수동 검증해 요약. 출처 근거와 URL 목록은 Private 검토 레코드에서만 보관합니다. 실제 숙박 요금/패키지 방송가/맛집 데이터의 자동 수집·배포는 아직 하지 않았습니다.
+
+## 읽기 쉬운 고정 URL 파일럿 (2026-10-10)
+
+`node scripts/build-site.mjs` 실행 시 `dist/`에 홈·국가/지역 인덱스·명소 개별 HTML·canonical·sitemap.xml·robots.txt를 생성합니다. 공식 여행지 3곳의 경로는 `data/routes.json`에서 변경 없이 관리합니다.
+
+- 예시: `/destinations/korea/jeju/saryeoni-forest/`, `/destinations/korea/busan/gamcheon-culture-village/`, `/destinations/japan/kyoto/arashiyama/`
+- 기존 `/?place=<public_id>` 상세 링크와 `/#budget` 경로는 보존합니다.
+- 기본 빌드 목적지는 GitHub Pages **계획 주소** `https://david12448.github.io/travel-site-public/`이며, GitHub Pages는 아직 설정되지 않았습니다.
+- 장기 주소는 `travel.evococoons.com` 또는 다른 대표 브랜드 선택 후 `SITE_URL=https://선택한-도메인/` 한 곳만 변경해 재생성합니다. 지금 DNS 연결하지 않습니다.
+- URL 설계와 검증/Pages 설정 및 DNS 이관 절차는 `docs/URL_ARCHITECTURE.md` 참고.
+- GitHub Actions는 PR·main에서 `dist/` 빌드, 직접 경로 HTTP 테스트 및 아티팩트 업로드까지만 진행하며 **PR 병합·Pages 배포는 자동 실행하지 않습니다**.
