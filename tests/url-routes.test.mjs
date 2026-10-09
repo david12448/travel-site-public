@@ -34,7 +34,8 @@ test("direct deep links already have physical index HTML before deploying",()=>{
      assert.ok(!html.includes("evococoons.com")&&!html.includes("prince-in-wonderworld.com"));
    }else{
      assert.ok(html.includes('rel="canonical"'));
-     assert.ok(html.includes(process.env.SITE_ORIGIN.replace(/\\/$/,"")+("/"+route)));
+     const origin=process.env.SITE_ORIGIN.endsWith("/") ? process.env.SITE_ORIGIN.slice(0,-1) : process.env.SITE_ORIGIN;
+     assert.ok(html.includes(origin+"/"+route));
    }
  }
 });
