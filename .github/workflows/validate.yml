@@ -12,5 +12,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - run: python3 scripts/build_static_routes.py
       - run: node --check app.js
       - run: node --test tests/*.test.mjs
