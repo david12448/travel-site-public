@@ -4,6 +4,9 @@ Only sanitized data belongs in the public repository. No third-party
 restaurant source ID, raw source URL, parser path, or API secret is allowed.
 """
 import datetime as dt
+import html
+import unicodedata
+from urllib.parse import unquote
 import json
 import re
 import sys
@@ -31,16 +34,36 @@ TOKEN = re.compile(r"^src_[a-z0-9_-]{8,100}$")
 # Public fields must not smuggle original URLs or private file locations in strings.
 # The validator is a publication guard, not a substitute for private-source review.
 PUBLIC_TEXT_URL = re.compile(
-    r"(?i)(?:\\b(?:https?|ftp|file)://|(?<!\\w)www\\.|"
-    r"(?<!\\w)//[a-z0-9.-]+(?:/|$)|"
-    r"\\b[a-z0-9.-]+\\.(?:com|net|org|io|co\\.kr|go\\.kr|kr|jp|dev|app|info)(?:[/?:#]|\\b))"
+    r"(?i)(?:\b(?:https?|ftp|file)://|(?<!\w)www\.|"
+    r"(?<!\w)//[a-z0-9.-]+(?:/|$)|"
+    r"\b[a-z0-9.-]+\.(?:com|net|org|io|co\.kr|go\.kr|kr|jp|dev|app|info)(?:[/?:#]|\b))"
 )
 PRIVATE_PATH = re.compile(
-    r"(?i)(?:[a-z]:[\\\\/]|(?:^|[\\s\\(\\[\\\"'\\x60])\\.{1,2}[/\\\\]|"
-    r"(?:^|[/\\\\\\s])(?:private|internal|raw[_-]?snapshots?|collectors?|"
-    r"parsers?|source[_-]?registry|secrets?)[/\\\\]|"
-    r"(?<!\\w)/[a-z0-9_.-]+(?:/[a-z0-9_.-]+)+)"
+    r"(?i)(?:[a-z]:[\\/]|(?:^|[\s\(\[\"'`])\.{1,2}[/\\]|"
+    r"(?:^|[/\\\s])(?:private|internal|raw[_-]?snapshots?|collectors?|"
+    r"parsers?|source[_-]?registry|secrets?)[/\\]|"
+    r"(?<!\w)/[a-z0-9_.-]+(?:/[a-z0-9_.-]+)+)"
 )
+CREDENTIAL = re.compile(
+    r"(?i)(?:\bgh[pousr]_[a-z0-9]{20,}|\bgithub_pat_[a-z0-9_]{30,}|"
+    r"\bBearer\s+[a-z0-9._~+/-]{8,}|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----|"
+    r"\b(?:api[_-]?key|access[_-]?token|service[_-]?key|client[_-]?secret|password)"
+    r"\s*[=:]\s*[\"']?[^\s\"'&,;<>]{4,})"
+)
+ESCAPE = re.compile(r"\\(?:u([a-fA-F0-9]{4})|x([a-fA-F0-9]{2}))")
+
+def decoded_forms(value):
+    text = unicodedata.normalize("NFKC", value)
+    yield text
+    for _ in range(8):
+        decoded = html.unescape(unquote(text))
+        decoded = ESCAPE.sub(lambda m: chr(int(m[1] or m[2], 16)), decoded).replace("\\/", "/")
+        if decoded == text:
+            return
+        text = decoded
+        yield text
+    if html.unescape(unquote(text)) != text or ESCAPE.search(text):
+        raise ValueError("public text exceeds decoding limit")
 
 def verify_date(value, field):
     if not isinstance(value, str):
@@ -55,15 +78,19 @@ def verify_date(value, field):
 def ensure_no_internals(value):
     if isinstance(value, dict):
         for key, entry in value.items():
-            if key.lower() in BLOCKED_KEYS:
-                raise ValueError(f"internal field exposed: {key}")
+            normalized = {re.sub(r"[^a-z0-9]", "", text.casefold()) for text in decoded_forms(key)}
+            blocked = {re.sub(r"[^a-z0-9]", "", key.casefold()) for key in BLOCKED_KEYS}
+            if normalized & blocked:
+                raise ValueError("internal field exposed")
+            ensure_no_internals(key)
             ensure_no_internals(entry)
     elif isinstance(value, list):
         for entry in value:
             ensure_no_internals(entry)
     elif isinstance(value, str):
-        if PUBLIC_TEXT_URL.search(value) or PRIVATE_PATH.search(value):
-            raise ValueError("public text contains URL or internal path")
+        for text in decoded_forms(value):
+            if PUBLIC_TEXT_URL.search(text) or PRIVATE_PATH.search(text) or CREDENTIAL.search(text):
+                raise ValueError("public text contains URL, internal path or credential-like value")
 
 
 def validate(payload):
@@ -149,3 +176,4 @@ def main():
 
 if __name__ == "__main__":
     raise SystemExit(main())
+

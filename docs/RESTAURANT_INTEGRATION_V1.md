@@ -23,3 +23,21 @@
 
 ## 공개 안전 규칙
 영업상태는 `open/closed/unknown`(행정·수집 당시 상태)이며 실시간 영업여부를 뜻하지 않는다. 시간/가격/예약 가능 여부는 검증일을 함께 제공하고, 검증되지 않은 항목은 표시하지 않는다. 미쉐린 등 연도별 선정 사실은 연도 없이 상시 배지로 표시하지 않는다. SNS·블로그 후기/사진을 무단 전재하지 않는다.
+
+
+
+## 2026-10-10 publication guard verification
+
+An encoded URL in an otherwise allowed consumer field reproduced a bypass of
+the previous string guard. Corrected regex escaping and added bounded percent,
+HTML entity and Unicode-escape decoding, nested value/key checks and common
+credential-shape rejection. Error output does not echo matched values.
+
+Eight feed tests passed locally, including nested arrays/recognitions and encoded
+synthetic strings. No production secret is a fixture. This feed intentionally
+has no direct URL field; official consumer links in other contracts require an
+explicit purpose-based policy instead of globally banning official websites.
+
+This is a validator fix in the existing integration PR, not a new deployed feed.
+No merge or deployment was performed. It does not establish a comprehensive audit
+of repository history, all client assets or every possible obfuscation format.

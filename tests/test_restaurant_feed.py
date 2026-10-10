@@ -36,6 +36,31 @@ class RestaurantFeedTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate(obj)
 
+    def test_reject_smuggled_strings_in_allowed_fields(self):
+        from urllib.parse import quote
+        original = 'https://example.invalid/collect'
+        values = [original, quote(original, safe=''),
+                  quote(quote(original, safe=''), safe=''),
+                  'https&#58;&#47;&#47;example.invalid/collect',
+                  r'\u0068ttps\x3a//example.invalid/collect',
+                  'internal/raw/synthetic', r'C:\private\synthetic',
+                  'Bearer '+'synthetic-marker', 'gh'+'p_'+'synthetic'*5]
+        for value in values:
+            for field in ('name', 'attribution'):
+                with self.subTest(field=field, value=value):
+                    obj = self.with_item()
+                    obj['restaurants'][0][field] = [value] if field == 'attribution' else value
+                    with self.assertRaises(ValueError) as caught:
+                        validate(obj)
+                    self.assertNotIn(value, str(caught.exception))
+
+    def test_nested_recognition_cannot_bypass_guard(self):
+        obj = self.with_item()
+        obj['restaurants'][0]['recognitions'] = [
+            {'organization':'기관', 'label':'https%3A%2F%2Fexample.invalid', 'year':2026}]
+        with self.assertRaises(ValueError):
+            validate(obj)
+
     def test_reject_duplicate_restaurant(self):
         obj = self.with_item()
         obj["restaurants"].append(copy.deepcopy(self.item))
@@ -59,3 +84,4 @@ class RestaurantFeedTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
